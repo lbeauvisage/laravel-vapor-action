@@ -123,13 +123,13 @@ jobs:
           coverage: none
 
       - name: Obtain Composer cache directory
-        id: composer-cache
+        id: composer_cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache Composer dependencies
         uses: actions/cache@v1
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ steps.composer_cache.outputs.dir }}
           # Use composer.json for key, if composer.lock is not committed.
           # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -142,13 +142,13 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
       - name: Obtain NPM Cache directory (used by Laravel Mix)
-        id: node-cache-dir
+        id: node_cache_dir
         run: echo "::set-output name=dir::$(npm config get cache)" # Use $(yarn cache dir) for yarn
 
       - name: Cache NPM dependencies (used by Laravel Mix)
         uses: actions/cache@v1
         with:
-          path: ${{ steps.node-cache-dir.outputs.dir }}
+          path: ${{ steps.node_cache_dir.outputs.dir }}
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} # Use '**/yarn.lock' for yarn
           restore-keys: ${{ runner.os }}-node-
 
